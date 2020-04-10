@@ -6,12 +6,12 @@ def check():
         return('Using existing config.')
     else:
         config = configparser.ConfigParser()
-        config['Settings'] = {'Bot_token': 'token',
-                              'Bot_prefix': '!',
-                              'DB_host': 'localhost',
-                              'DB_db': 'database',
-                              'DB_user': 'username',
-                              'DB_pass': 'password'}
+        config['Settings'] = {'bot_token': 'token',
+                              'bot_prefix': '!',
+                              'db_host': 'localhost',
+                              'db_db': 'database',
+                              'db_user': 'username',
+                              'db_pass': 'password'}
         with open('flux-projects/config.ini', 'w') as f:
             config.write(f)
         return('Config file does not exist. Created with default values.')
