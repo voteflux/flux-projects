@@ -1,7 +1,10 @@
 import discord
 from discord.ext import commands
+import config_manager as config
 
-flux = commands.Bot(command_prefix='!', case_insensitive=True)
+print(config.check())
+
+flux = commands.Bot(command_prefix=config.read('bot_prefix'), case_insensitive=True)
 
 
 @flux.event
@@ -9,4 +12,4 @@ async def on_ready():
     print('Flux Projects bot is ready.')
 
 
-flux.run('token')
+flux.run(config.read('bot_token'))
