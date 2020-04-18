@@ -18,7 +18,7 @@ class Error_Handling(commands.Cog):
 
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.message.delete()
-            await ctx.send(f'Missing argument. See {await self.flux.get_prefix(ctx)}help', delete_after=10)
+            await ctx.send(f'{ctx.author.mention}, Missing argument. See {await self.flux.get_prefix(ctx)}help', delete_after=10)
 
         elif isinstance(error, commands.NoPrivateMessage):
             await ctx.message.delete()
@@ -26,22 +26,22 @@ class Error_Handling(commands.Cog):
 
         elif isinstance(error, commands.MissingRole):
             await ctx.message.delete()
-            await ctx.send('You don\'t have the required role.', delete_after=10)
+            await ctx.send('{ctx.author.mention}, You don\'t have the required role.', delete_after=10)
 
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.message.delete()
-            await ctx.send('{ctx.author.mention} You must wait a minute to use this command again.', delete_after=10)
+            await ctx.send('{ctx.author.mention}, You must wait a minute to use this command again.', delete_after=10)
 
         elif isinstance(error, commands.MaxConcurrencyReached):
             await ctx.message.delete()
-            await ctx.send(f'{ctx.author.mention} You can only run this command once at a time.', delete_after=10)
+            await ctx.send(f'{ctx.author.mention}, You can only run this command once at a time.', delete_after=10)
 
         elif isinstance(error, commands.UserInputError):
             await ctx.message.delete()
-            await ctx.send(f'{ctx.author.mention} Invalid input. See {await self.flux.get_prefix(ctx)}help', delete_after=10)
+            await ctx.send(f'{ctx.author.mention}, Invalid input. See {await self.flux.get_prefix(ctx)}help', delete_after=10)
 
         else:
-            await ctx.send(f'Uh oh... something broke again. Stand by for an admin.')
+            await ctx.send(f'{ctx.author.mention}, Uh oh... something broke again. Stand by for an admin.')
             print(f'\n\nCOMMAND ERROR:\nAuthor: {ctx.author}\nChannel: {ctx.channel}\nCommand: {ctx.message.content}\n{error}\n\n')
 
 
