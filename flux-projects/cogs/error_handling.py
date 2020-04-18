@@ -10,7 +10,7 @@ class Error_Handling(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandNotFound):
-            await ctx.send(f'Invalid command. See {await self.flux.get_prefix(ctx)}help')
+            pass
 
         elif isinstance(error, commands.MissingPermissions):
             await ctx.message.delete()
