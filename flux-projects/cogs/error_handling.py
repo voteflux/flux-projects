@@ -30,6 +30,9 @@ class Error_Handling(commands.Cog):
         elif isinstance(error, commands.MaxConcurrencyReached):
             await ctx.send(f'{ctx.author.mention} You can only run this command once at a time.')
 
+        elif isinstance(error, commands.UserInputError):
+            await ctx.send(f'{ctx.author.mention} Invalid input. See {await self.flux.get_prefix(ctx)}help')
+
         else:
             await ctx.send(f'Uh oh... something broke again. Stand by for an admin.')
             print(f'\n\nCOMMAND ERROR:\nAuthor: {ctx.author}\nChannel: {ctx.channel}\nCommand: {ctx.message.content}\n{error}\n\n')
