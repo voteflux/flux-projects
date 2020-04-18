@@ -13,25 +13,32 @@ class Error_Handling(commands.Cog):
             await ctx.send(f'Invalid command. See {await self.flux.get_prefix(ctx)}help')
 
         elif isinstance(error, commands.MissingPermissions):
+            await ctx.message.delete()
             await ctx.send('Insufficient permissions')
 
         elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f'Missing argument. See {await self.flux.get_prefix(ctx)}help')
+            await ctx.message.delete()
+            await ctx.send(f'Missing argument. See {await self.flux.get_prefix(ctx)}help', delete_after=10)
 
         elif isinstance(error, commands.NoPrivateMessage):
-            await ctx.send(f'{ctx.author.mention}, you can\'t use this command in a private message. Head to the bot channel.')
+            await ctx.message.delete()
+            await ctx.send(f'{ctx.author.mention}, you can\'t use this command in a private message. Head to the bot channel.', delete_after=10)
 
         elif isinstance(error, commands.MissingRole):
-            await ctx.send('You don\'t have the required role.')
+            await ctx.message.delete()
+            await ctx.send('You don\'t have the required role.', delete_after=10)
 
         elif isinstance(error, commands.CommandOnCooldown):
-            await ctx.send('{ctx.author.mention} You must wait a minute to use this command again.')
+            await ctx.message.delete()
+            await ctx.send('{ctx.author.mention} You must wait a minute to use this command again.', delete_after=10)
 
         elif isinstance(error, commands.MaxConcurrencyReached):
-            await ctx.send(f'{ctx.author.mention} You can only run this command once at a time.')
+            await ctx.message.delete()
+            await ctx.send(f'{ctx.author.mention} You can only run this command once at a time.', delete_after=10)
 
         elif isinstance(error, commands.UserInputError):
-            await ctx.send(f'{ctx.author.mention} Invalid input. See {await self.flux.get_prefix(ctx)}help')
+            await ctx.message.delete()
+            await ctx.send(f'{ctx.author.mention} Invalid input. See {await self.flux.get_prefix(ctx)}help', delete_after=10)
 
         else:
             await ctx.send(f'Uh oh... something broke again. Stand by for an admin.')
