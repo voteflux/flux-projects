@@ -49,7 +49,7 @@ class Project_Info(commands.Cog):
             #embed.add_field(name='Resouces', value=project[9], inline=True)
             #embed.add_field(name='Outcomes', value=project[5], inline=True)
             #embed.add_field(name='Deliverables', value=project[6], inline=True)
-            embed.add_field(name='Objective', value=project[7], inline=True)
+            embed.add_field(name='Objective', value=config.objective_data(f'{project[7]}')[0], inline=True)
             embed.add_field(name='Completion', value=project[3], inline=True)
             embed.add_field(name='Status', value=project[11], inline=True)
             embed.set_footer(text=f'Project ID #{project[0]}  |  Flux {"Official" if project[10] else "Volunteer"} Project')
