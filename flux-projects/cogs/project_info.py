@@ -39,7 +39,9 @@ class Project_Info(commands.Cog):
             cursor.close()
             db.close()
 
-            embed = discord.Embed(title=project[1], description=project[4], color=0x000000)
+            colour = await commands.ColourConverter.convert(self, ctx, config.objective_data(str(project[7]))[1])
+
+            embed = discord.Embed(title=project[1], description=project[4], color=colour)
             embed.set_author(name=author.display_name, icon_url=author.avatar_url)
             
             # Unnecessary information. Can be used later on for in depth message about project.
