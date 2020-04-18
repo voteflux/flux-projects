@@ -10,7 +10,7 @@ class Project_Info(commands.Cog):
         self.flux = flux
 
     @commands.command(brief='View information about a specific project.', help='View all information about the specified project.')
-    async def project(self, ctx, id=None):
+    async def project(self, ctx, id: int = None):
         content = ""
 
         if id is None:
