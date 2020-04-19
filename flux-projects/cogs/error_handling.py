@@ -34,7 +34,7 @@ class Error_Handling(commands.Cog):
 
         elif isinstance(error, commands.MaxConcurrencyReached):
             await ctx.message.delete()
-            await ctx.send(f'{ctx.author.mention}, You can only run this command once at a time.', delete_after=10)
+            await ctx.send(f'{ctx.author.mention}, You can only run this command this many times at once: `{error.number}`.', delete_after=10)
 
         elif isinstance(error, commands.UserInputError):
             await ctx.message.delete()
