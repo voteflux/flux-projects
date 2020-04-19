@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import mysql.connector
 import config_manager as config
+from discord.ext.commands.cooldowns import BucketType
 
 
 class Project_Command(commands.Cog):
@@ -97,6 +98,12 @@ class Project_Command(commands.Cog):
             db.close()
 
             return project_ID[0]
+
+    @project.command(brief='Create a new project.', help='Creates a new project. The bot will message you questions to complete the required information.')
+    @commands.max_concurrency(1, per=BucketType.user, wait=False)
+    async def new(self, ctx):
+        await ctx.message.delete()
+        await ctx.send(f'{ctx.author.mention}, To create a new project, please answer the questions I send to you in a private message.', delete_after=10)
 
 
 def setup(flux):
