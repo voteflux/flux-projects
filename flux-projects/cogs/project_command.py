@@ -13,8 +13,8 @@ class Project_Command(commands.Cog):
     async def project(self, ctx):
         pass
 
-    @project.command(brief='View information about a specific project.', help='View all information about the specified project.')
-    async def view(self, ctx, id: int = None):
+    @project.command(brief='View information about a specific project.', help='View all information about the specified project or the latest project to be created if no project ID is is specified.')
+    async def info(self, ctx, id: int = None):
         content = ""
 
         if id is None:
