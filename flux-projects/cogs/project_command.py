@@ -18,6 +18,9 @@ class Project_Command(commands.Cog):
             
             except TypeError:
                 await self.info(ctx)
+
+            except ValueError:
+                raise commands.UserInputError
             
             else:
                 await self.info(ctx, id)
