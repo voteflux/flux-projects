@@ -9,9 +9,18 @@ class Project_Command(commands.Cog):
     def __init__(self, flux):
         self.flux = flux
 
-    @commands.group()
+    @commands.group(aliases=['projects'], brief='Parent project command, containing project related subcommands.', help='Parent project command, containing project related subcommands. Calling this command without specifying a subcommand or by specifying a number as the first argument will trigger the \'info\' subcommand.')
     async def project(self, ctx):
-        pass
+        # If no subcommand passed, default to info subcommand.
+        if ctx.invoked_subcommand is None:
+            try:
+                id = int(ctx.subcommand_passed)
+            
+            except TypeError:
+                await self.info(ctx)
+            
+            else:
+                await self.info(ctx, id)
 
     @project.command(brief='View information about a specific project.', help='View all information about the specified project or the latest project to be created if no project ID is is specified.')
     async def info(self, ctx, id: int = None):
