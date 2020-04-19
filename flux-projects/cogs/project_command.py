@@ -46,6 +46,10 @@ class Project_Command(commands.Cog):
         else:
             project = cursor.fetchone()
 
+            if project is None:
+                await ctx.message.delete()
+                return await ctx.send(f'{ctx.author.mention}, There are no projects by the ID `{id}`.', delete_after=10)
+
             author = ctx.guild.get_member(project[8])
 
             # API request for a User object instead of a Member object incase the user is no longer in the guild
