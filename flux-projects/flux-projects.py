@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import config_manager as config
+import utility.config_manager as config
 import os
 
 print(config.check())

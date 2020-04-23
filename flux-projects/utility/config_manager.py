@@ -3,7 +3,7 @@ import os.path
 from ast import literal_eval
 
 def check():
-    if os.path.isfile('flux-projects/config.ini'):
+    if os.path.isfile('flux-projects/utility/config.ini'):
         return('Using existing config.')
     else:
         config = configparser.ConfigParser()
@@ -24,18 +24,18 @@ def check():
                                 '6 ': ('Resource & Data Creation', 'green'),
                                 '7': ('Scaling Party Membership', 'blue')}
 
-        with open('flux-projects/config.ini', 'w') as f:
+        with open('flux-projects/utility/config.ini', 'w') as f:
             config.write(f)
         return('Config file does not exist. Created with default values.')
 
 def read(setting):
     config = configparser.ConfigParser()
-    config.read('flux-projects/config.ini')
+    config.read('flux-projects/utility/config.ini')
     return(config['Settings'][setting])
 
 def objective_data(objective):
     config = configparser.ConfigParser()
-    config.read('flux-projects/config.ini')
+    config.read('flux-projects/utility/config.ini')
     return(literal_eval(config['Objectives'][objective]))
 
 def db_config():
