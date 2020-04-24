@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import mysql.connector
 import utility.config_manager as config
 from discord.ext.commands.cooldowns import BucketType
 from utility.db_manager import db_connection
