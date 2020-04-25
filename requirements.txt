@@ -10,7 +10,7 @@ filelock==3.0.12
 idna==2.9
 multidict==4.7.5
 mysql-connector-python==8.0.19
-protobuf==3.6.1
+protobuf==3.11.3
 six==1.14.0
 virtualenv==20.0.18
 websockets==8.1
