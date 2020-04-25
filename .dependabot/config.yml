@@ -1,0 +1,9 @@
+version: 1
+update_configs:
+  - package_manager: "python"
+    directory: "/"
+    update_schedule: "daily"
+    ignored_updates:
+      - match:
+          dependency_name: "protobuf"
+          version_requirement: ">3.6.1"
