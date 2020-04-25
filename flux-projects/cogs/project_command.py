@@ -10,23 +10,7 @@ class Project_Command(commands.Cog):
     def __init__(self, flux):
         self.flux = flux
 
-    @commands.group(aliases=['projects'], brief='Parent project command, containing project related subcommands.', help='Parent project command, containing project related subcommands. Calling this command without specifying a subcommand or by specifying a number as the first argument will trigger the \'info\' subcommand.')
-    async def project(self, ctx):
-        # If no subcommand passed, default to info subcommand.
-        if ctx.invoked_subcommand is None:
-            try:
-                id = int(ctx.subcommand_passed)
-            
-            except TypeError:
-                await self.info(ctx)
-
-            except ValueError:
-                raise commands.UserInputError
-            
-            else:
-                await self.info(ctx, id)
-
-    @project.command(brief='View information about a specific project.', help='View all information about the specified project or the latest project to be created if no project ID is is specified.')
+    @commands.command(brief='View information about a specific project.', help='View all information about the specified project or the latest project to be created if no project ID is is specified.')
     async def info(self, ctx, id: int = None):
         content = ""
 
@@ -72,8 +56,7 @@ class Project_Command(commands.Cog):
             db.execute('SELECT id FROM `projects` ORDER BY `projects`.`id` DESC LIMIT 1')
             project_ID = db.fetchone()
             return project_ID[0]
-
-    @project.command(brief='Create a new project.', help='Creates a new project. The bot will message you questions to complete the required information.')
+    @commands.command(brief='Create a new project.', help='Creates a new project. The bot will message you questions to complete the required information.')
     @commands.max_concurrency(1, per=BucketType.user, wait=False)
     async def new(self, ctx):
         await ctx.message.delete()
