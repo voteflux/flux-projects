@@ -5,7 +5,7 @@ from discord.ext.commands.cooldowns import BucketType
 from utility.db_manager import db_connection
 
 
-class Project_Command(commands.Cog):
+class Info(commands.Cog):
 
     def __init__(self, flux):
         self.flux = flux
@@ -65,4 +65,4 @@ class Project_Command(commands.Cog):
 '''
 
 def setup(flux):
-    flux.add_cog(Project_Command(flux))
+    flux.add_cog(Info(flux))
