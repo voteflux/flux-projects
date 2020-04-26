@@ -45,16 +45,11 @@ def check():
 def read(setting):
     config = configparser.ConfigParser()
     config.read('flux-projects/utility/config.ini')
-    return(config['Settings'][setting])
-
-def objective_data(objective):
-    config = configparser.ConfigParser()
-    config.read('flux-projects/utility/config.ini')
-    return(literal_eval(config['Objectives'][objective]))
+    return literal_eval(config[setting[0]][setting[1]]) if 'Objectives' == setting[0] else config[setting[0]][setting[1]]
 
 def db_config():
-    db_config = {'host': str(read('DB_host')),
-                 'database': str(read('DB_db')),
-                 'user': str(read('DB_user')),
-                 'password': str(read('DB_pass'))}
+    db_config = {'host': read(('Database', 'host')),
+                 'database': read(('Database', 'db')),
+                 'user': read(('Database', 'user')),
+                 'password': read(('Database', 'pass'))}
     return(db_config)
