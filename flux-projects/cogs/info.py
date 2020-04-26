@@ -45,7 +45,7 @@ class Info(commands.Cog):
         #embed.add_field(name='Deliverables', value=project[6], inline=True)
         embed.add_field(name='Objective', value=config(('Objectives', str(project[7])))[0], inline=True)
         embed.add_field(name='Completion', value=project[3], inline=True)
-        embed.add_field(name='Status', value=project[11], inline=True)
+        embed.add_field(name='Status', value=config(('Status', str(project[11]))), inline=True)
         embed.set_footer(text=f'Project ID #{project[0]}  |  Flux {"Official" if project[10] else "Volunteer"} Project')
 
         await ctx.send(content=content, embed=embed)
