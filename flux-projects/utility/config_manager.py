@@ -8,12 +8,13 @@ def check():
     else:
         config = configparser.ConfigParser()
 
-        config['Settings'] = {'bot_token': 'token',
-                              'bot_prefix': '!',
-                              'db_host': 'localhost',
-                              'db_db': 'database',
-                              'db_user': 'username',
-                              'db_pass': 'password'}
+        config['Bot'] = {'token': 'token',
+                         'prefix': '!'}
+
+        config['Database'] = {'host': 'localhost',
+                              'db': 'database',
+                              'user': 'username',
+                              'pass': 'password'}
 
         config['Objectives'] = {'0': ('Awareness & Outreach', 'red'),
                                 '1': ('Party Operation', 'gold'),
@@ -23,6 +24,19 @@ def check():
                                 '5': ('Development', 'dark_blue'),
                                 '6 ': ('Resource & Data Creation', 'green'),
                                 '7': ('Scaling Party Membership', 'blue')}
+
+        config['Resources'] = {'0': ('Funding', 402823346854559744),
+                                '1': ('Media Accounts Access', 313952769541406720),
+                                '2': ('Official Account Access', 140741468787572736),
+                                '3': ('Pull Request Review(App)', 449910203220099073),
+                                '4': ('Pull Request Review (VoteFlux)', 199731686093619200),
+                                '5': ('Membership Info', 402823346854559744)}
+
+        config['Status'] = {'0': 'Active',
+                            '1': 'Open',
+                            '2': 'Done',
+                            '3': 'Blocked',
+                            '4': 'Out Of Scope'}
 
         with open('flux-projects/utility/config.ini', 'w') as f:
             config.write(f)
