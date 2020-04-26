@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-import utility.config_manager as config
-from discord.ext.commands.cooldowns import BucketType
+from utility.config_manager import read as config
 from utility.db_manager import db_connection
 
 
@@ -32,7 +31,7 @@ class Info(commands.Cog):
         if author is None:
             author = await self.flux.fetch_user(project[8])
 
-        colour = await commands.ColourConverter.convert(self, ctx, config.objective_data(str(project[7]))[1])
+        colour = await commands.ColourConverter.convert(self, ctx, config(('Objectives', str(project[7])))[1])
 
         embed = discord.Embed(title=project[1], description=project[4], color=colour)
         embed.set_author(name=author.display_name, icon_url=author.avatar_url)
@@ -44,7 +43,7 @@ class Info(commands.Cog):
         #embed.add_field(name='Resouces', value=project[9], inline=True)
         #embed.add_field(name='Outcomes', value=project[5], inline=True)
         #embed.add_field(name='Deliverables', value=project[6], inline=True)
-        embed.add_field(name='Objective', value=config.objective_data(str(project[7]))[0], inline=True)
+        embed.add_field(name='Objective', value=config(('Objectives', str(project[7])))[0], inline=True)
         embed.add_field(name='Completion', value=project[3], inline=True)
         embed.add_field(name='Status', value=project[11], inline=True)
         embed.set_footer(text=f'Project ID #{project[0]}  |  Flux {"Official" if project[10] else "Volunteer"} Project')

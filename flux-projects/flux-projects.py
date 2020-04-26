@@ -5,7 +5,7 @@ import os
 
 print(config.check())
 
-flux = commands.Bot(command_prefix=config.read('bot_prefix'), case_insensitive=True)
+flux = commands.Bot(command_prefix=config.read(('Bot', 'prefix')), case_insensitive=True)
 
 
 @flux.event
@@ -18,4 +18,4 @@ for filename in os.listdir('flux-projects/cogs'):
         flux.load_extension(f'cogs.{filename[:-3]}')
 
 
-flux.run(config.read('bot_token'))
+flux.run(config.read(('Bot', 'token')))
