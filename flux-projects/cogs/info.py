@@ -10,6 +10,7 @@ class Info(commands.Cog):
         self.flux = flux
 
     @commands.command(brief='View information about a specific project.', help='View all information about the specified project or the latest project to be created if no project ID is is specified.')
+    @commands.guild_only()
     async def info(self, ctx, id: int = None):
         content = ""
 
