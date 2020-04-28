@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from utility.config_manager import read as config
 from utility.db_manager import db_connection
+import asyncio
 
 
 class Info(commands.Cog):
@@ -34,22 +35,41 @@ class Info(commands.Cog):
 
         colour = await commands.ColourConverter.convert(self, ctx, config(('Objectives', str(project[7])))[1])
 
-        embed = discord.Embed(title=project[1], description=project[4], color=colour)
+        embed = discord.Embed(title=project[1], description=project[4], colour=colour)
         embed.set_author(name=author.display_name, icon_url=author.avatar_url)
-        
-        # Unnecessary information. Can be used later on for in depth message about project.
-        
-        # This field is a blank line break for inline field organising purposes
-        #embed.add_field(name='\u200b', value='\u200b', inline=False)
-        #embed.add_field(name='Resouces', value=project[9], inline=True)
-        #embed.add_field(name='Outcomes', value=project[5], inline=True)
-        #embed.add_field(name='Deliverables', value=project[6], inline=True)
         embed.add_field(name='Objective', value=config(('Objectives', str(project[7])))[0], inline=True)
         embed.add_field(name='Completion', value=project[3], inline=True)
         embed.add_field(name='Status', value=config(('Status', str(project[11]))), inline=True)
         embed.set_footer(text=f'Project ID #{project[0]}  |  Flux {"Official" if project[10] else "Volunteer"} Project')
 
-        await ctx.send(content=content, embed=embed)
+        msg = await ctx.send(content=content, embed=embed)
+        
+        await msg.add_reaction('ℹ️')
+
+        def check(reaction, user):
+            return user == ctx.author and str(reaction.emoji) == 'ℹ️'
+
+        try:
+            reaction, user = await self.flux.wait_for('reaction_add', timeout=60.0, check=check)
+
+        except asyncio.TimeoutError:
+            pass
+
+        else:
+            content = "Here is some further information about the project:"
+            embed = discord.Embed(title=project[1], description=project[4], colour=colour)
+            embed.set_author(name=author.display_name, icon_url=author.avatar_url)
+            embed.add_field(name='Objective', value=config(('Objectives', str(project[7])))[0], inline=True)
+            embed.add_field(name='Completion', value=project[3], inline=True)
+            embed.add_field(name='Status', value=config(('Status', str(project[11]))), inline=True)
+            embed.add_field(name='Resouces', value=project[9], inline=True)
+            embed.add_field(name='Outcomes', value=project[5], inline=True)
+            embed.add_field(name='Deliverables', value=project[6], inline=True)
+            embed.set_footer(text=f'Project ID #{project[0]}  |  Flux {"Official" if project[10] else "Volunteer"} Project')
+            await ctx.author.send(content=content, embed=embed)
+        
+        finally:
+            await msg.clear_reactions()
 
     async def get_latest_project_ID(self):
         with db_connection() as db:
