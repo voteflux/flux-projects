@@ -21,7 +21,6 @@ class Error_Handling(commands.Cog):
             await ctx.send(f'{ctx.author.mention}, Missing argument. See {await self.flux.get_prefix(ctx)}help', delete_after=10)
 
         elif isinstance(error, commands.NoPrivateMessage):
-            await ctx.message.delete()
             await ctx.send(f'{ctx.author.mention}, you can\'t use this command in a private message. Head to the bot channel.', delete_after=10)
 
         elif isinstance(error, commands.MissingRole):
