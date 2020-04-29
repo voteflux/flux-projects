@@ -25,7 +25,7 @@ class Error_Handling(commands.Cog):
 
         elif isinstance(error, commands.MissingRole):
             await ctx.message.delete()
-            await ctx.send('{ctx.author.mention}, You don\'t have the required role.', delete_after=10)
+            await ctx.send(f'{ctx.author.mention}, You don\'t have the required role.', delete_after=10)
 
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.message.delete()
