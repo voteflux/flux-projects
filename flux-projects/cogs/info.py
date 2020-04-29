@@ -98,7 +98,7 @@ class Info(commands.Cog):
 
         # Conditional fields
 
-        embed.add_field(name='Objective', value=config(('Objectives', str(data[7])))[0], inline=True) if detail == "long" or detail == "longer" else embed
+        embed.add_field(name='Objective', value=config(('Objectives', str(data[7])))[0] if data[7] else None, inline=True) if detail == "long" or detail == "longer" else embed
         embed.add_field(name='Completion', value=data[3], inline=True) if detail == "long" or detail == "longer" else embed
         embed.add_field(name='Status', value=config(('Status', str(data[11]))), inline=True) if detail == "long" or detail == "longer" else embed
 
