@@ -77,6 +77,32 @@ class Info(commands.Cog):
             project_ID = db.fetchone()
             return project_ID[0]
 
+    async def send_project_info(self, ctx, data: tuple, detail: str = 'short'):
+        
+        colour = await commands.ColourConverter.convert(self, ctx, config(('Objectives', str(data[7])))[1])
+        embed = discord.Embed(title=data[1], description=data[4], colour=colour)
+
+        author = ctx.guild.get_member(data[8])
+        # API request for a User object instead of a Member object incase the user is not in the guild
+        if author is None:
+            author = await self.flux.fetch_user(data[8])
+        embed.set_author(name=author.display_name, icon_url=author.avatar_url)
+
+        embed.set_footer(text=f'Project ID #{data[0]}  |  Flux {"Official" if data[10] else "Volunteer"} Project')
+
+        # Conditional fields
+
+        embed.add_field(name='Objective', value=config(('Objectives', str(data[7])))[0], inline=True) if detail == "long" or detail == "longer" else embed
+        embed.add_field(name='Completion', value=data[3], inline=True) if detail == "long" or detail == "longer" else embed
+        embed.add_field(name='Status', value=config(('Status', str(data[11]))), inline=True) if detail == "long" or detail == "longer" else embed
+
+        embed.add_field(name='Resouces', value=data[9], inline=True) if detail == "longer" else embed
+        embed.add_field(name='Outcomes', value=data[5], inline=True) if detail == "longer" else embed
+        embed.add_field(name='Deliverables', value=data[6], inline=True) if detail == "longer" else embed
+
+        message = await ctx.channel.send(embed=embed)
+        return message
+
 
 def setup(flux):
     flux.add_cog(Info(flux))
