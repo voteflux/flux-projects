@@ -99,7 +99,13 @@ class Info(commands.Cog):
         embed.add_field(name='Completion', value=data[3], inline=True) if detail == "long" or detail == "longer" else embed
         embed.add_field(name='Status', value=config(('Status', str(data[11]))), inline=True) if detail == "long" or detail == "longer" else embed
 
-        embed.add_field(name='Resouces', value=data[9], inline=True) if detail == "longer" else embed
+        if detail == "longer":
+            if data[9]:
+                resource_holder = await self.get_member_then_user(ctx, config(('Resources', str(data[9])))[1])
+                resources = f"{config(('Resources', str(data[9])))[0]} - {resource_holder.display_name}"
+            else:
+                resources = None
+        embed.add_field(name='Resouces', value=resources, inline=True) if detail == "longer" else embed
         embed.add_field(name='Outcomes', value=data[5], inline=True) if detail == "longer" else embed
         embed.add_field(name='Deliverables', value=data[6], inline=True) if detail == "longer" else embed
 
