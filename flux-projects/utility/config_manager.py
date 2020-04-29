@@ -47,6 +47,11 @@ def read(setting):
     config.read('flux-projects/utility/config.ini')
     return literal_eval(config[setting[0]][setting[1]]) if 'Objectives' == setting[0] else config[setting[0]][setting[1]]
 
+def read_section(section):
+    config = configparser.ConfigParser()
+    config.read('flux-projects/utility/config.ini')
+    return config.items(section)
+
 def db_config():
     db_config = {'host': read(('Database', 'host')),
                  'database': read(('Database', 'db')),
