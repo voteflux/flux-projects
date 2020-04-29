@@ -27,6 +27,12 @@ class Filter(commands.Cog):
             db.execute(f'SELECT * FROM `projects` WHERE `status` = \'{status_id}\'')
             projects = db.fetchall()
 
+        if len(projects) == 0:
+            await ctx.message.delete()
+            embed = discord.Embed(description=f'{ctx.author.mention}, There are no projects with the `{status.title()}` status.', colour=discord.Colour.red())
+            await ctx.send(embed=embed, delete_after=10)
+            return
+
         embed = discord.Embed(description=f'Here are all projects with the `{status.title()}` status:', colour=discord.Colour.green())
         embed.set_footer(text=f'Detail: {detail.title()}, Total: {len(projects)}')
         await ctx.send(embed=embed)
