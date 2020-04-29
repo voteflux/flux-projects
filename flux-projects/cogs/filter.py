@@ -9,7 +9,7 @@ class Filter(commands.Cog):
     def __init__(self, flux):
         self.flux = flux
 
-    @commands.command(brief='Returns all projects with the specified status.', help='View all projects with the specified status. You can specify how much detail to show by including a detail argument. Avaliable statuses: active, open, done, blocked, out of scope. Detail options: short, long.')
+    @commands.command(brief='Returns all projects with the specified status.', help='View all projects with the specified status. You can specify how much detail to show by including a detail argument. Avaliable statuses: active, open, done, blocked, out of scope. Detail options: short, long, longer.')
     @commands.has_role('Server Admin')
     async def filter(self, ctx, status: str = 'active', detail: str = 'short'):
         # We don't want case to be a factor
