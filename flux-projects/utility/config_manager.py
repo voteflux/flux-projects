@@ -45,7 +45,7 @@ def check():
 def read(setting):
     config = configparser.ConfigParser()
     config.read('flux-projects/utility/config.ini')
-    return literal_eval(config[setting[0]][setting[1]]) if 'Objectives' == setting[0] else config[setting[0]][setting[1]]
+    return literal_eval(config[setting[0]][setting[1]]) if 'Objectives' == setting[0] or 'Resources' == setting[0] else config[setting[0]][setting[1]]
 
 def read_section(section):
     config = configparser.ConfigParser()
