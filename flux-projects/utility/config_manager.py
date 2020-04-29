@@ -58,6 +58,13 @@ def find_key_from_value(section, value):
         if value.lower() == i[1].lower(): # We don't want case to be a factor
             return i[0]
 
+def read_section_values(section):
+    s = read_section(section)
+    values = []
+    for i in s:
+        values.append(i[1].lower()) # We don't want case to be a factor
+    return values
+
 def db_config():
     db_config = {'host': read(('Database', 'host')),
                  'database': read(('Database', 'db')),
