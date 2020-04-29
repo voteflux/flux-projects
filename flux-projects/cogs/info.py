@@ -84,10 +84,7 @@ class Info(commands.Cog):
         embed = discord.Embed(title=data[1], description=data[4], colour=colour)
 
         if data[8] != None:
-            leader = ctx.guild.get_member(data[8])
-            if leader == None:
-                # API request for a User object instead of a Member object incase the user is not in the guild
-                leader = await self.flux.fetch_user(data[8])
+            leader = await self.get_member_then_user(ctx, data[8])
         else:
             # There was no data from the DB, don't bother trying to retrieve the member or user object
             leader = None
@@ -108,6 +105,14 @@ class Info(commands.Cog):
 
         message = await ctx.channel.send(embed=embed)
         return message
+    
+    # Attempt to get a member object in context, fallback to user object
+    async def get_member_then_user(self, ctx, id):
+        object = ctx.guild.get_member(id)
+        if object == None:
+            object = await self.flux.fetch_user(id)
+            
+        return object
 
 
 def setup(flux):
