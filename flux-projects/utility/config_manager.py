@@ -52,6 +52,12 @@ def read_section(section):
     config.read('flux-projects/utility/config.ini')
     return config.items(section)
 
+def find_key_from_value(section, value):
+    s = read_section(section)
+    for i in s:
+        if value.lower() == i[1].lower(): # We don't want case to be a factor
+            return i[0]
+
 def db_config():
     db_config = {'host': read(('Database', 'host')),
                  'database': read(('Database', 'db')),
