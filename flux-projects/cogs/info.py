@@ -79,14 +79,20 @@ class Info(commands.Cog):
 
     async def send_project_info(self, ctx, data: tuple, detail: str = 'short'):
         
-        colour = await commands.ColourConverter.convert(self, ctx, config(('Objectives', str(data[7])))[1])
+        colour = await commands.ColourConverter.convert(self, ctx, config(('Objectives', str(data[7])))[1]) if data[7] != None else discord.Colour(0x202225)
+
         embed = discord.Embed(title=data[1], description=data[4], colour=colour)
 
-        author = ctx.guild.get_member(data[8])
-        # API request for a User object instead of a Member object incase the user is not in the guild
-        if author is None:
-            author = await self.flux.fetch_user(data[8])
-        embed.set_author(name=author.display_name, icon_url=author.avatar_url)
+        if data[8] != None:
+            leader = ctx.guild.get_member(data[8])
+            if leader == None:
+                # API request for a User object instead of a Member object incase the user is not in the guild
+                leader = await self.flux.fetch_user(data[8])
+        else:
+            # There was no data from the DB, don't bother trying to retrieve the member or user object
+            leader = None
+
+        embed.set_author(name=leader.display_name, icon_url=leader.avatar_url) if leader != None else embed
 
         embed.set_footer(text=f'Project ID #{data[0]}  |  Flux {"Official" if data[10] else "Volunteer"} Project')
 
