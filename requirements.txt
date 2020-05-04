@@ -12,6 +12,6 @@ multidict==4.7.5
 mysql-connector-python==8.0.19
 protobuf==3.6.1
 six==1.14.0
-virtualenv==20.0.18
+virtualenv==20.0.20
 websockets==8.1
 yarl==1.4.2
