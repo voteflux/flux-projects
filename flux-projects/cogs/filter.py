@@ -40,7 +40,8 @@ class Filter(commands.Cog):
         
         info_cog = self.flux.get_cog('Info')
         for project in projects:
-            await info_cog.send_project_info(ctx, project, detail)
+            data = await info_cog.form_project_data(ctx, project, detail)
+            await ctx.send(embed=data)
 
 
 def setup(flux):
