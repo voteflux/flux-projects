@@ -27,23 +27,9 @@ class Info(commands.Cog):
             await ctx.message.delete()
             return await ctx.send(f'{ctx.author.mention}, There are no projects by the ID `{id}`.', delete_after=10)
 
-        author = ctx.guild.get_member(project[8])
+        data = await self.form_project_data(ctx, project, 'short')
+        msg = await ctx.send(content=content, embed=data)
 
-        # API request for a User object instead of a Member object incase the user is no longer in the guild
-        if author is None:
-            author = await self.flux.fetch_user(project[8])
-
-        colour = await commands.ColourConverter.convert(self, ctx, config(('Objectives', str(project[7])))[1])
-
-        embed = discord.Embed(title=project[1], description=project[4], colour=colour)
-        embed.set_author(name=author.display_name, icon_url=author.avatar_url)
-        embed.add_field(name='Objective', value=config(('Objectives', str(project[7])))[0], inline=True)
-        embed.add_field(name='Completion', value=project[3], inline=True)
-        embed.add_field(name='Status', value=config(('Status', str(project[11]))), inline=True)
-        embed.set_footer(text=f'Project ID #{project[0]}  |  Flux {"Official" if project[10] else "Volunteer"} Project')
-
-        msg = await ctx.send(content=content, embed=embed)
-        
         await msg.add_reaction('ℹ️')
 
         def check(reaction, user):
@@ -56,17 +42,8 @@ class Info(commands.Cog):
             pass
 
         else:
-            content = "Here is some further information about the project:"
-            embed = discord.Embed(title=project[1], description=project[4], colour=colour)
-            embed.set_author(name=author.display_name, icon_url=author.avatar_url)
-            embed.add_field(name='Objective', value=config(('Objectives', str(project[7])))[0], inline=True)
-            embed.add_field(name='Completion', value=project[3], inline=True)
-            embed.add_field(name='Status', value=config(('Status', str(project[11]))), inline=True)
-            embed.add_field(name='Resouces', value=project[9], inline=True)
-            embed.add_field(name='Outcomes', value=project[5], inline=True)
-            embed.add_field(name='Deliverables', value=project[6], inline=True)
-            embed.set_footer(text=f'Project ID #{project[0]}  |  Flux {"Official" if project[10] else "Volunteer"} Project')
-            await ctx.author.send(content=content, embed=embed)
+            data = await self.form_project_data(ctx, project, 'longer')
+            await ctx.author.send(embed=data)
         
         finally:
             await msg.clear_reactions()
