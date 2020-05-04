@@ -15,20 +15,28 @@ class Info(commands.Cog):
     async def info(self, ctx, id: int = None):
         content = ""
 
+        # No project was specified, we'll send the latest one and a message to signify this.
         if id is None:
             id = await self.get_latest_project_ID()
             content = "This is the latest project:"
 
+        # Request data relating to the specified project
         with db_connection() as db:
             db.execute(f'SELECT * FROM `projects` WHERE `id` = \'{id}\' LIMIT 1')
             project = db.fetchone()
 
+        # No data was returned, there is no project by the ID that was specified
         if project is None:
             await ctx.message.delete()
             return await ctx.send(f'{ctx.author.mention}, There are no projects by the ID `{id}`.', delete_after=10)
-
+        
+        # Form the returned data and send it
         data = await self.form_project_data(ctx, project, 'short')
         msg = await ctx.send(content=content, embed=data)
+
+        '''
+        The remainder of this function handles the temporary solution to send further information about a project.
+        '''
 
         await msg.add_reaction('ℹ️')
 
