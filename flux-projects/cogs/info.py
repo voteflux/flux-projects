@@ -77,7 +77,7 @@ class Info(commands.Cog):
             project_ID = db.fetchone()
             return project_ID[0]
 
-    async def send_project_info(self, ctx, data: tuple, detail: str = 'short'):
+    async def form_project_data(self, ctx, data: tuple, detail: str = 'short'):
         
         colour = await commands.ColourConverter.convert(self, ctx, config(('Objectives', str(data[7])))[1]) if data[7] != None else discord.Colour(0x202225)
 
@@ -109,8 +109,7 @@ class Info(commands.Cog):
         embed.add_field(name='Outcomes', value=data[5], inline=True) if detail == "longer" else embed
         embed.add_field(name='Deliverables', value=data[6], inline=True) if detail == "longer" else embed
 
-        message = await ctx.channel.send(embed=embed)
-        return message
+        return embed
     
     # Attempt to get a member object in context, fallback to user object
     async def get_member_then_user(self, ctx, id):
