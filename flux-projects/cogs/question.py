@@ -19,6 +19,19 @@ class Question(commands.Cog):
         embed = discord.Embed(title=question, colour=discord.Colour.green())
         embed.set_footer(text=f'Character limit: {char_limit if char_limit > 0 else "No limit"}')
         await user.send(embed=embed)
+
+        answer = await self.await_reply(user)
+        if answer == None:
+            return
+
+        if len(answer.content) <= char_limit or char_limit == 0:
+            return answer.content
+        else:
+            embed = discord.Embed(description=f'You must answer in {char_limit} characters or less.', colour=discord.Colour.red())
+            await user.send(embed=embed)
+            await self.question_text(user, question, char_limit)
+
+    async def await_reply(self, user: discord.User):
         def check(m):
             return m.author == user and isinstance(m.channel, discord.DMChannel)
         
@@ -31,12 +44,7 @@ class Question(commands.Cog):
             return
 
         else:
-            if len(answer.content) <= char_limit or char_limit == 0:
-                return answer.content
-            else:
-                embed = discord.Embed(description=f'You must answer in {char_limit} characters or less.', colour=discord.Colour.red())
-                await user.send(embed=embed)
-                await self.question_text(user, question, char_limit) 
+            return answer
 
 
 def setup(flux):
