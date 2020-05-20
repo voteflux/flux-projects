@@ -29,7 +29,7 @@ class Question(commands.Cog):
         else:
             embed = discord.Embed(description=f'You must answer in {char_limit} characters or less.', colour=discord.Colour.red())
             await user.send(embed=embed)
-            await self.question_text(user, question, char_limit)
+            return await self.question_text(user, question, char_limit)
 
     async def await_reply(self, user: discord.User):
         def check(m):
