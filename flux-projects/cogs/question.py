@@ -12,10 +12,12 @@ class Question(commands.Cog):
         answers = []
         for q in questions:
             if q[0] == 'text':
-                answers.append(await self.question_text(user, q[1]))
+                answers.append(await self.question_text(user, q[1], q[2]))
+        return answers
 
-    async def question_text(self, user: discord.User, question):
-        embed = discord.Embed(description=question, colour=discord.Colour.green())
+    async def question_text(self, user: discord.User, question, char_limit: int = 0):
+        embed = discord.Embed(title=question, colour=discord.Colour.green())
+        embed.set_footer(text=f'Character limit: {char_limit if char_limit > 0 else "No limit"}')
         await user.send(embed=embed)
         def check(m):
             return m.author == user and isinstance(m.channel, discord.DMChannel)
@@ -29,7 +31,13 @@ class Question(commands.Cog):
             return
 
         else:
-            return answer.content
+            if len(answer.content) <= char_limit or char_limit == 0:
+                return answer.content
+            else:
+                embed = discord.Embed(description=f'You must answer in {char_limit} characters or less.', colour=discord.Colour.red())
+                await user.send(embed=embed)
+                await self.question_text(user, question, char_limit) 
+
 
 def setup(flux):
     flux.add_cog(Question(flux))
