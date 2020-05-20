@@ -38,6 +38,21 @@ class Question(commands.Cog):
         embed.set_footer(text='Use the format YYYY-MM-DD')
         await user.send(embed=embed)
 
+        answer = await self.await_reply(user)
+        if answer == None:
+            return
+
+        try:
+            date = datetime.strptime(answer.content, '%Y-%m-%d').date()
+
+        except ValueError:
+            embed = discord.Embed(description=f'You must answer a valid date in the format YYYY-MM-DD.', colour=discord.Colour.red())
+            await user.send(embed=embed)
+            return await self.question_date(user, question)
+
+        else:
+            return date
+
     async def await_reply(self, user: discord.User):
         def check(m):
             return m.author == user and isinstance(m.channel, discord.DMChannel)
