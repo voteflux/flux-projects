@@ -13,6 +13,8 @@ class Question(commands.Cog):
         for q in questions:
             if q[0] == 'text':
                 answers.append(await self.question_text(user, q[1], q[2]))
+            elif q[0] == 'date':
+                answers.append(await self.question_date(user, q[1]))
         return answers
 
     async def question_text(self, user: discord.User, question, char_limit: int = 0):
@@ -30,6 +32,11 @@ class Question(commands.Cog):
             embed = discord.Embed(description=f'You must answer in {char_limit} characters or less.', colour=discord.Colour.red())
             await user.send(embed=embed)
             return await self.question_text(user, question, char_limit)
+
+    async def question_date(self, user: discord.User, question):
+        embed = discord.Embed(title=question, colour=discord.Colour.green())
+        embed.set_footer(text='Use the format YYYY-MM-DD')
+        await user.send(embed=embed)
 
     async def await_reply(self, user: discord.User):
         def check(m):
