@@ -9,7 +9,7 @@ class Question(commands.Cog):
     def __init__(self, flux):
         self.flux = flux
 
-    async def question_handler(self, user: discord.User, questions: tuple):
+    async def question_handler(self, user: discord.User, questions: list):
         answers = []
         for q in questions:
             if q[0] == 'text':
