@@ -16,6 +16,8 @@ class Question(commands.Cog):
                 answers.append(await self.question_text(user, q[1], q[2]))
             elif q[0] == 'date':
                 answers.append(await self.question_date(user, q[1]))
+            elif q[0] == 'choice':
+                answers.append(await self.question_choice(user, q[1], q[2], q[3]))
         return answers
 
     async def question_text(self, user: discord.User, question, char_limit: int = 0):
@@ -53,6 +55,9 @@ class Question(commands.Cog):
 
         else:
             return date
+
+    async def question_choice(self, user: discord.User, question, max_choices, choices):
+        pass
 
     async def await_reply(self, user: discord.User):
         def check(m):
