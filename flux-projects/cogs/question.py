@@ -57,7 +57,9 @@ class Question(commands.Cog):
             return date
 
     async def question_choice(self, user: discord.User, question, max_choices, choices):
-        pass
+        embed = discord.Embed(title=question, colour=discord.Colour.green())
+        embed.set_footer(text=f'You can have up to {max_choices} {"answers" if max_choices > 1 else "answer"}.')
+        await user.send(embed=embed)
 
     async def await_reply(self, user: discord.User):
         def check(m):
