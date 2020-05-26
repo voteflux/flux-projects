@@ -26,6 +26,14 @@ class New(commands.Cog):
                      ['text', 'What resources does your project require? *This is a placeholder for an unsupported question type.*', 100],
                      ['text', 'What is the status of your project? *This is a placeholder for an unsupported question type.*', 100]]
 
+        # Should this person be able to create official projects?
+        role = get(ctx.guild.roles, name='Flux Vetted')
+        
+        if role in ctx.author.roles:
+            questions.append(['text', 'Is this an official Flux project? *This is a placeholder for an unsupported question type.*', 100])
+        else:
+            official = False
+        
         answers = await self.question.question_handler(ctx.author, questions)
         await ctx.send(answers)
 
