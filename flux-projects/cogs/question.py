@@ -9,11 +9,6 @@ class Question(commands.Cog):
     def __init__(self, flux):
         self.flux = flux
 
-    @commands.command()
-    async def q(self, ctx):
-        questions = [['choice', 'Whats your fav?', [['1️⃣', 'This one'], ['2️⃣', 'This two'], ['3️⃣', 'This three']], 2],]
-        await ctx.send(await self.question_handler(ctx.author, questions))
-
     async def question_handler(self, user: discord.User, questions: list):
         answers = []
         for q in questions:
