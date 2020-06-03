@@ -89,25 +89,19 @@ class Question(commands.Cog):
         return await self.process_choices(user, question, choices, max_choices, reactions)
 
     async def process_choices(self, user: discord.User, question, choices, max_choices, reactions):
-        total_selections = 0
         answers = []
 
-        for r in reactions:
+        for i, r in enumerate(reactions):
             # A count over 1 is considered a selection
+            # A user also can't add a new emoji more than once in a PM, so there is no need to filter for that
             if r.count > 1:
-                total_selections += 1
-                answers.append(r.emoji)
+                answers.append(i)
 
         # Has the user made more selections than they're allowed?
-        if total_selections > max_choices:
+        if len(answers) > max_choices:
             embed = discord.Embed(description=f'You are only allowed up to {max_choices} {"answers" if max_choices > 1 else "answer"}.', colour=discord.Colour.red())
             await user.send(embed=embed)
             return await self.question_choice(user, question, choices, max_choices)
-
-        '''
-        for i, j in choices, answers:
-            if i[]
-            '''
 
         return answers
 
