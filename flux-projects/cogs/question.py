@@ -56,9 +56,32 @@ class Question(commands.Cog):
         else:
             return date
 
-    async def question_choice(self, user: discord.User, question, max_choices, choices):
-        embed = discord.Embed(title=question, colour=discord.Colour.green())
+    async def question_choice(self, user: discord.User, question, choices, max_choices):
+        approve_reaction = '✅'
+
+        # Form question embed
+        embed = discord.Embed(title=question, description=f'React with your {"answers" if max_choices > 1 else "answer"} and then {approve_reaction} once you\'re finished.', colour=discord.Colour.green())
         embed.set_footer(text=f'You can have up to {max_choices} {"answers" if max_choices > 1 else "answer"}.')
+        
+        for q in choices:
+            embed.add_field(name='\u200b', value=f'{q[0]} {q[1]}', inline=False)
+        
+        # Send question embed, message known as qmsg
+        qmsg = await user.send(embed=embed)
+
+        # Add a reaction for each possible answer
+        for e in choices:
+            await qmsg.add_reaction(e[0])
+
+        # Add reaction to finalise selection
+        # We listen for this reaction and return a list of all reactions to qmsg upon this
+        await qmsg.add_reaction(approve_reaction)
+
+        reactions = await self.await_react(user, qmsg, approve_reaction)
+
+        # Forward the reactions list to a processing function self.process_choices
+        # This is where the returned reaction data is interrpeted and all necessary checks occur
+        return await self.process_choices(user, question, choices, max_choices, reactions)
 
     async def process_choices(self, user: discord.User, question, choices, max_choices, reactions):
         total_selections = 0
