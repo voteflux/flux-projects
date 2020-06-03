@@ -21,7 +21,7 @@ def check():
                                 '3': ('Campaigning (tech)', 'purple'),
                                 '4': ('Campaigning (elections)', 'orange'),
                                 '5': ('Development', 'dark_blue'),
-                                '6 ': ('Resource & Data Creation', 'green'),
+                                '6': ('Resource & Data Creation', 'green'),
                                 '7': ('Scaling Party Membership', 'blue'),
                                 '8': ('Awareness & Outreach', 'red')}
 
