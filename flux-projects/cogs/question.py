@@ -62,7 +62,7 @@ class Question(commands.Cog):
             return date
 
     async def question_choice(self, user: discord.User, question, choices, max_choices):
-        approve_reaction = '✅'
+        approve_reaction = '➡️'
 
         # Form question embed
         embed = discord.Embed(title=question, description=f'React with your {"answers" if max_choices > 1 else "answer"} and then {approve_reaction} once you\'re finished.', colour=discord.Colour.green())
