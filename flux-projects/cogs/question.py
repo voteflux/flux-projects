@@ -98,6 +98,22 @@ class Question(commands.Cog):
         else:
             return answer
 
+    async def await_react(self, user: discord.User, msg: discord.Message, approve_reaction: str):
+        def check(reaction, reactor):
+            return reactor == user and str(reaction.emoji) == approve_reaction
+        
+        try:
+            reaction, reactor = await self.flux.wait_for('reaction_add', timeout=60, check=check)
+        
+        except asyncio.TimeoutError as e:
+            embed = discord.Embed(description='You did not answer the question in time.', colour=discord.Colour.red())
+            await user.send(embed=embed)
+            return
+        
+        else:
+            rmsg = await user.fetch_message(msg.id)
+            rmsg.reactions.pop()
+            return rmsg.reactions
 
 def setup(flux):
     flux.add_cog(Question(flux))
