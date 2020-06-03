@@ -27,7 +27,7 @@ def check():
 
         config['Resources'] = {'1': ('Media Accounts Access', 313952769541406720),
                                 '2': ('Official Account Access', 140741468787572736),
-                                '3': ('Pull Request Review(App)', 449910203220099073),
+                                '3': ('Pull Request Review (App)', 449910203220099073),
                                 '4': ('Pull Request Review (VoteFlux)', 199731686093619200),
                                 '5': ('Membership Info', 402823346854559744),
                                 '6': ('Funding', 402823346854559744)}
