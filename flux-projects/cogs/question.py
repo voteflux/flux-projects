@@ -66,7 +66,7 @@ class Question(commands.Cog):
 
         # Form question embed
         embed = discord.Embed(title=question, description=f'React with your {"answers" if max_choices > 1 else "answer"} and then {approve_reaction} once you\'re finished.', colour=discord.Colour.green())
-        embed.set_footer(text=f'You can have up to {max_choices} {"answers" if max_choices > 1 else "answer"}.')
+        embed.set_footer(text=f'You have up to {max_choices} {"answers" if max_choices > 1 else "answer"}.')
         
         for q in choices:
             embed.add_field(name='\u200b', value=f'{q[0]} {q[1]}', inline=False)
