@@ -59,7 +59,29 @@ class Question(commands.Cog):
     async def question_choice(self, user: discord.User, question, max_choices, choices):
         embed = discord.Embed(title=question, colour=discord.Colour.green())
         embed.set_footer(text=f'You can have up to {max_choices} {"answers" if max_choices > 1 else "answer"}.')
-        await user.send(embed=embed)
+
+    async def process_choices(self, user: discord.User, question, choices, max_choices, reactions):
+        total_selections = 0
+        answers = []
+
+        for r in reactions:
+            # A count over 1 is considered a selection
+            if r.count > 1:
+                total_selections += 1
+                answers.append(r.emoji)
+
+        # Has the user made more selections than they're allowed?
+        if total_selections > max_choices:
+            embed = discord.Embed(description=f'You are only allowed up to {max_choices} {"answers" if max_choices > 1 else "answer"}.', colour=discord.Colour.red())
+            await user.send(embed=embed)
+            return await self.question_choice(user, question, choices, max_choices)
+
+        '''
+        for i, j in choices, answers:
+            if i[]
+            '''
+
+        return answers
 
     async def await_reply(self, user: discord.User):
         def check(m):
