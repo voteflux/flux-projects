@@ -69,7 +69,7 @@ class New(commands.Cog):
         resources = ''
 
         for i in ans[7]:
-            resources += config.find_key_from_value('Resources', i) + '-'
+            resources += config.find_key_from_value('Resources', i)
 
         # Official is default 'No' unless we asked the user that question
         if len(questions) == 10:
