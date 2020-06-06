@@ -55,7 +55,7 @@ def read_section(section):
 def find_key_from_value(section, value):
     s = read_section(section)
     for i in s:
-        if value.lower() == i[1].lower(): # We don't want case to be a factor
+        if value.lower() in i[1].lower(): # We don't want case to be a factor
             return i[0]
 
 def read_section_values(section):
