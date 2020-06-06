@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from discord.utils import get
 import utility.config_manager as config
+from utility.db_manager import db_connection
 
 
 class New(commands.Cog):
@@ -49,7 +50,7 @@ class New(commands.Cog):
                          ['5️⃣', config.read(('Status', '5'))]],
                          1]]
 
-        # Should this person be able to create official projects?
+        # Is this person verified to create official projects?
         role = get(ctx.guild.roles, name='Flux Vetted')
         
         if role in ctx.author.roles:
@@ -57,11 +58,42 @@ class New(commands.Cog):
                 ['✅', 'Yes'],
                 ['❌', 'No']],
                 1])
-        else:
-            official = False
         
-        answers = await self.question.question_handler(ctx.author, questions)
-        await ctx.send(answers)
+        ans = await self.question.question_handler(ctx.author, questions)
+        
+        # Process resources list into string of key values
+        resources = ''
+
+        for i in ans[7]:
+            resources += config.find_key_from_value('Resources', i) + '-'
+
+        # Official is default 'No' unless we asked the user that question
+        if len(questions) == 10:
+            official = ans[9]
+        else:
+            official = 'No'
+
+        # Process all data into a dict for clarity in SQL query and formatting as not every data point is asked for from the user
+        ansdict = {
+            "title": ans[0],
+            "start_date": ans[1],
+            "end_date": ans[2],
+            "description": ans[3],
+            "outcomes": ans[4],
+            "deliverables": ans[5],
+            "objective": config.find_key_from_value('Objectives', ans[6][0]),
+            "lead": ctx.author.id,
+            "resources": resources,
+            "official": f"{1 if official == 'Yes' else 0}",
+            "status": config.find_key_from_value('Status', ans[8][0])
+        }
+
+        # Insert the new project
+        with db_connection() as db:
+            db.execute(f"INSERT INTO `projects` (title, start_date, end_date, description, outcomes, deliverables, objective, lead, resources, official, status) VALUES ('{ansdict['title']}', '{ansdict['start_date']}', '{ansdict['end_date']}', '{ansdict['description']}', '{ansdict['outcomes']}', '{ansdict['deliverables']}', {ansdict['objective']}, {ansdict['lead']}, '{ansdict['resources']}', {ansdict['official']}, {ansdict['status']})")
+
+        embed = discord.Embed(description='Successfully created a new project.', colour=discord.Colour.green())
+        await ctx.author.send(embed=embed)
 
 
 def setup(flux):
