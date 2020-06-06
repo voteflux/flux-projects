@@ -90,7 +90,7 @@ class Question(commands.Cog):
             # A count over 1 is considered a selection
             # A user also can't add a new emoji more than once in a PM, so there is no need to filter for that
             if r.count > 1:
-                answers.append(i)
+                answers.append(choices[i][1])
 
         # Has the user made more selections than they're allowed?
         if len(answers) > max_choices:
