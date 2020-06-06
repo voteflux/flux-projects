@@ -61,6 +61,10 @@ class New(commands.Cog):
         
         ans = await self.question.question_handler(ctx.author, questions)
         
+        # Last value of ans will be True if all questions were asked
+        if len(ans) == 0 or ans[-1] != True:
+            return
+
         # Process resources list into string of key values
         resources = ''
 

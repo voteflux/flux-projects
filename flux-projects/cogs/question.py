@@ -12,12 +12,26 @@ class Question(commands.Cog):
     async def question_handler(self, user: discord.User, questions: list):
         answers = []
         for q in questions:
+            
             if q[0] == 'text':
-                answers.append(await self.question_text(user, q[1], q[2]))
+                ans = await self.question_text(user, q[1], q[2])
+                if ans == None:
+                    return answers
+                answers.append(ans)
+
             elif q[0] == 'date':
-                answers.append(await self.question_date(user, q[1]))
+                ans = await self.question_date(user, q[1])
+                if ans == None:
+                    return answers
+                answers.append(ans)
+
             elif q[0] == 'choice':
-                answers.append(await self.question_choice(user, q[1], q[2], q[3]))
+                ans = await self.question_choice(user, q[1], q[2], q[3])
+                if ans == None:
+                    return answers
+                answers.append(ans)
+        
+        answers.append(True)
         return answers
 
     async def question_text(self, user: discord.User, question, char_limit: int = 0):
@@ -78,6 +92,8 @@ class Question(commands.Cog):
         await qmsg.add_reaction(approve_reaction)
 
         reactions = await self.await_react(user, qmsg, approve_reaction)
+        if reactions == None:
+            return
 
         # Forward the reactions list to a processing function self.process_choices
         # This is where the returned reaction data is interrpeted and all necessary checks occur
