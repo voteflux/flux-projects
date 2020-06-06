@@ -86,8 +86,10 @@ class Info(commands.Cog):
 
         if detail == "longer":
             if data[9]:
-                resource_holder = await self.get_member_then_user(ctx, config(('Resources', str(data[9])))[1])
-                resources = f"{config(('Resources', str(data[9])))[0]} - {resource_holder.display_name}"
+                resources = ''
+                for i in data[9]:
+                    resource_holder = await self.get_member_then_user(ctx, config(('Resources', i))[1])
+                    resources += f"{config(('Resources', i))[0]} - {resource_holder.display_name}\n"
             else:
                 resources = None
         embed.add_field(name='Resouces', value=resources, inline=True) if detail == "longer" else embed
