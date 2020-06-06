@@ -8,7 +8,7 @@ distlib==0.3.0
 dnspython==1.16.0
 filelock==3.0.12
 idna==2.9
-multidict==4.7.5
+multidict==4.7.6
 mysql-connector-python==8.0.20
 protobuf==3.12.2
 six==1.14.0
