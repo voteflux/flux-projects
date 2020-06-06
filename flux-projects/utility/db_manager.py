@@ -5,7 +5,7 @@ import mysql.connector
 class db_connection:
     
     def __init__(self):
-        self.db = mysql.connector.connect(**db_config())
+        self.db = mysql.connector.connect(**db_config(), autocommit=True)
         self.cursor = self.db.cursor()
 
     def __enter__(self):
