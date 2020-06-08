@@ -11,6 +11,7 @@ class New(commands.Cog):
     def __init__(self, flux):
         self.flux = flux
         self.question = self.flux.get_cog('Question')
+        self.info = self.flux.get_cog('Info')
 
     @commands.command(brief='Create a new project.', help='Creates a new project. The bot will message you questions to complete the required information.')
     @commands.max_concurrency(1, per=BucketType.user, wait=False)
@@ -96,7 +97,7 @@ class New(commands.Cog):
         with db_connection() as db:
             db.execute(f"INSERT INTO `projects` (title, start_date, end_date, description, outcomes, deliverables, objective, lead, resources, official, status) VALUES ('{ansdict['title']}', '{ansdict['start_date']}', '{ansdict['end_date']}', '{ansdict['description']}', '{ansdict['outcomes']}', '{ansdict['deliverables']}', {ansdict['objective']}, {ansdict['lead']}, '{ansdict['resources']}', {ansdict['official']}, {ansdict['status']})")
 
-        embed = discord.Embed(description='Successfully created a new project.', colour=discord.Colour.green())
+        embed = discord.Embed(description=f'You have successfully created a new project with the ID `{await self.info.get_latest_project_ID()}`', colour=discord.Colour.green())
         await ctx.author.send(embed=embed)
 
 
