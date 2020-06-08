@@ -9,7 +9,8 @@ class Ping(commands.Cog):
 
     @commands.command(brief='Check the bot\'s latency.', help='Check the bot\'s latency or whether it\'s responding at all.')
     async def ping(self, ctx):
-        await ctx.send(f'Pong! That took me {round(self.flux.latency * 1000)}ms!')
+        await ctx.message.delete()
+        await ctx.send(f'Pong! That took me {round(self.flux.latency * 1000)}ms!', delete_after=10)
 
 
 def setup(flux):
