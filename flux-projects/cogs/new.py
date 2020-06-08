@@ -17,7 +17,9 @@ class New(commands.Cog):
     @commands.max_concurrency(1, per=BucketType.user, wait=False)
     async def new(self, ctx):
         await ctx.message.delete()
-        await ctx.send(f'{ctx.author.mention}, To create a new project, please answer the questions I send to you in a private message.', delete_after=10)
+
+        embed = discord.Embed(description='You\'re now creating a new project, here is what I need to know from you:', colour=discord.Colour.green())
+        await ctx.author.send(embed=embed)
 
         questions = [['text', 'What is your project title?', 128],
                      ['date', 'What is the start date of your project?'],
