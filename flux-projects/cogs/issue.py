@@ -19,6 +19,15 @@ class Issue(commands.Cog):
         embed = discord.Embed(description='You\'re now creating a new issue for the app, here is what I need to know from you:', colour=discord.Colour.green())
         await ctx.author.send(embed=embed)
 
+        questions = [['text', 'What is the title if your issue?', 64],
+                    ['date', 'What is the start date of your issue?'],
+                    ['date', 'What is the end date of your issue?'],
+                    ['text', 'What is the question of your issue?', 128],
+                    ['text', 'What is the description of your issue?', 256],
+                    ['text', 'What is the name of the sponsoring organisation?', 64]]
+        
+        ans = await self.question.question_handler(ctx.author, questions)
+
 
 def setup(flux):
     flux.add_cog(Issue(flux))
