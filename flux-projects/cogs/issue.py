@@ -28,6 +28,10 @@ class Issue(commands.Cog):
         qhand = self.flux.get_cog('Question')
         ans = await qhand.question_handler(ctx.author, questions)
 
+        # Last value of ans will be True if all questions were asked
+        if len(ans) == 0 or ans[-1] != True:
+            return
+
 
 def setup(flux):
     flux.add_cog(Issue(flux))
