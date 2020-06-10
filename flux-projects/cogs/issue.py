@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from discord.utils import get
 import requests
+import utility.config_manager as config
 
 
 class Issue(commands.Cog):
@@ -33,6 +34,16 @@ class Issue(commands.Cog):
         if len(ans) == 0 or ans[-1] != True:
             return
 
+        # Form dictionary for API request
+        issue = {
+            "token": config.read(('Bot', 'issue_token')),
+            "data": {"chamber": "Public",
+                    "short_title": ans[0],
+                    "start_date": str(ans[1]),
+                    "end_date": str(ans[2]),
+                    "description": ans[3],
+                    "sponsor": ans[4]}}
+        
         embed = discord.Embed(description='You have successfully created a new issue for the app.', colour=discord.Colour.green())
         await ctx.author.send(embed=embed)
 
