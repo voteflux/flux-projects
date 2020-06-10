@@ -8,7 +8,6 @@ class Issue(commands.Cog):
 
     def __init__(self, flux):
         self.flux = flux
-        self.question = self.flux.get_cog('Question')
 
     @commands.command(brief='Create a new issue for DigiPol', help='Create a new issue for the app. You will be prompted to answer some questions by the bot.')
     @commands.max_concurrency(1, per=BucketType.user, wait=False)
@@ -26,7 +25,8 @@ class Issue(commands.Cog):
                     ['text', 'What is the description of your issue?', 256],
                     ['text', 'What is the name of the sponsoring organisation?', 64]]
         
-        ans = await self.question.question_handler(ctx.author, questions)
+        qhand = self.flux.get_cog('Question')
+        ans = await qhand.question_handler(ctx.author, questions)
 
 
 def setup(flux):
