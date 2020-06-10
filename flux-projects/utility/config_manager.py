@@ -9,7 +9,8 @@ def check():
         config = configparser.ConfigParser()
 
         config['Bot'] = {'token': 'token',
-                         'prefix': '!'}
+                         'prefix': '!',
+                         'issue_token': 'TEST'}
 
         config['Database'] = {'host': 'localhost',
                               'db': 'database',
