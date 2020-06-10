@@ -32,6 +32,9 @@ class Issue(commands.Cog):
         if len(ans) == 0 or ans[-1] != True:
             return
 
+        embed = discord.Embed(description='You have successfully created a new issue for the app.', colour=discord.Colour.green())
+        await ctx.author.send(embed=embed)
+
 
 def setup(flux):
     flux.add_cog(Issue(flux))
