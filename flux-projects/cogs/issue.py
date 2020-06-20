@@ -13,7 +13,7 @@ class Issue(commands.Cog):
 
     @commands.command(brief='Create a new issue for DigiPol', help='Create a new issue for the app. You will be prompted to answer some questions by the bot.')
     @commands.max_concurrency(1, per=BucketType.user, wait=False)
-    @commands.has_role('Flux Vetted')
+    @commands.has_role('App Issue Creator')
     async def issue(self, ctx):
         await ctx.message.delete()
 
