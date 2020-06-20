@@ -49,7 +49,7 @@ class Issue(commands.Cog):
         resp = requests.post('https://1j56c60pb0.execute-api.ap-southeast-2.amazonaws.com/dev/issue', json=issue)
 
         # Raise an error if we don't get an OK response
-        if resp.status_code != 201:
+        if resp.status_code != 200:
             raise commands.CommandError(f'POST /dev/issue {resp.status_code}')
 
         embed = discord.Embed(description='You have successfully created a new issue for the app.', colour=discord.Colour.green())
