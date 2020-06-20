@@ -50,7 +50,7 @@ class Issue(commands.Cog):
 
         # Raise an error if we don't get an OK response
         if resp.status_code != 200:
-            raise commands.CommandError(f'POST /dev/issue {resp.status_code}')
+            raise commands.CommandError(f'POST /dev/issue {resp.status_code} {resp.text}')
 
         embed = discord.Embed(description='You have successfully created a new issue for the app.', colour=discord.Colour.green())
         await ctx.author.send(embed=embed)
