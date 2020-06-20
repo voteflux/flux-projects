@@ -41,8 +41,9 @@ class Issue(commands.Cog):
                     "short_title": ans[0],
                     "start_date": str(ans[1]),
                     "end_date": str(ans[2]),
-                    "description": ans[3],
-                    "sponsor": ans[4]}}
+                    "question": ans[3],
+                    "description": ans[4],
+                    "sponsor": ans[5]}}
         
         # Make the API POST request
         resp = requests.post('https://1j56c60pb0.execute-api.ap-southeast-2.amazonaws.com/dev/issue', json=issue)
