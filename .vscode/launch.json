@@ -8,7 +8,7 @@
             "name": "Debug flux-projects",
             "type": "python",
             "request": "launch",
-            "program": "flux-projects/flux-projects.py",
+            "program": "${workspaceFolder}/flux-projects/flux-projects.py",
             "console": "integratedTerminal"
         }
     ]
