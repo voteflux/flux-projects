@@ -60,8 +60,8 @@ class New(commands.Cog):
                 ['❌', 'Not official']],
                 1])
         
-        field_handler = self.flux.get_cog('Question')
-        ans = await field_handler.question_handler(ctx.author, fields)
+        field_handler = self.flux.get_cog('Field')
+        ans = await field_handler.field_handler(ctx.author, fields)
         
         # Last value of ans will be True if all fields were complete
         if len(ans) == 0 or ans[-1] != True:
