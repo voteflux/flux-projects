@@ -4,7 +4,7 @@ import asyncio
 from datetime import datetime
 
 
-class Question(commands.Cog):
+class Field(commands.Cog):
 
     def __init__(self, flux):
         self.flux = flux
@@ -149,4 +149,4 @@ class Question(commands.Cog):
             return rmsg.reactions
 
 def setup(flux):
-    flux.add_cog(Question(flux))
+    flux.add_cog(Field(flux))
