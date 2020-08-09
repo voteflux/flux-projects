@@ -4,29 +4,29 @@ import asyncio
 from datetime import datetime
 
 
-class Question(commands.Cog):
+class Field(commands.Cog):
 
     def __init__(self, flux):
         self.flux = flux
 
-    async def question_handler(self, user: discord.User, questions: list):
+    async def field_handler(self, user: discord.User, fields):
         answers = []
-        for q in questions:
+        for f in fields:
             
-            if q[0] == 'text':
-                ans = await self.question_text(user, q[1], q[2])
+            if f[0] == 'text':
+                ans = await self.text_field(user, f[1], f[2])
                 if ans == None:
                     return answers
                 answers.append(ans)
 
-            elif q[0] == 'date':
-                ans = await self.question_date(user, q[1])
+            elif f[0] == 'date':
+                ans = await self.date_field(user, f[1])
                 if ans == None:
                     return answers
                 answers.append(ans)
 
-            elif q[0] == 'choice':
-                ans = await self.question_choice(user, q[1], q[2], q[3])
+            elif f[0] == 'choice':
+                ans = await self.choice_field(user, f[1], f[2], f[3])
                 if ans == None:
                     return answers
                 answers.append(ans)
@@ -34,8 +34,8 @@ class Question(commands.Cog):
         answers.append(True)
         return answers
 
-    async def question_text(self, user: discord.User, question, char_limit: int = 0):
-        embed = discord.Embed(title=question, colour=discord.Colour.green())
+    async def text_field(self, user: discord.User, field, char_limit: 0):
+        embed = discord.Embed(title=field, colour=discord.Colour.green())
         embed.set_footer(text=f'Character limit: {char_limit if char_limit > 0 else "No limit"}')
         await user.send(embed=embed)
 
@@ -48,10 +48,10 @@ class Question(commands.Cog):
         else:
             embed = discord.Embed(description=f'You must answer in {char_limit} characters or less.', colour=discord.Colour.red())
             await user.send(embed=embed)
-            return await self.question_text(user, question, char_limit)
+            return await self.text_field(user, field, char_limit)
 
-    async def question_date(self, user: discord.User, question):
-        embed = discord.Embed(title=question, colour=discord.Colour.green())
+    async def date_field(self, user: discord.User, field):
+        embed = discord.Embed(title=field, colour=discord.Colour.green())
         embed.set_footer(text='Use the format YYYY-MM-DD')
         await user.send(embed=embed)
 
@@ -65,41 +65,41 @@ class Question(commands.Cog):
         except ValueError:
             embed = discord.Embed(description=f'You must answer a valid date in the format YYYY-MM-DD.', colour=discord.Colour.red())
             await user.send(embed=embed)
-            return await self.question_date(user, question)
+            return await self.date_field(user, field)
 
         else:
             return date
 
-    async def question_choice(self, user: discord.User, question, choices, max_choices):
+    async def choice_field(self, user: discord.User, field, choices, max_choices):
         approve_reaction = '➡️'
 
-        # Form question embed
-        embed = discord.Embed(title=question, description=f'React with your {"answers" if max_choices > 1 else "answer"} and then {approve_reaction} once you\'re finished.', colour=discord.Colour.green())
+        # Form field embed
+        embed = discord.Embed(title=field, description=f'React with your {"answers" if max_choices > 1 else "answer"} and then {approve_reaction} once you\'re finished.', colour=discord.Colour.green())
         embed.set_footer(text=f'You have up to {max_choices} {"answers" if max_choices > 1 else "answer"}.')
         
-        for q in choices:
-            embed.add_field(name='\u200b', value=f'{q[0]} {q[1]}', inline=False)
+        for c in choices:
+            embed.add_field(name='\u200b', value=f'{c[0]} {c[1]}', inline=False)
         
-        # Send question embed, message known as qmsg
-        qmsg = await user.send(embed=embed)
+        # Send field embed, message known as fmsg
+        fmsg = await user.send(embed=embed)
 
         # Add a reaction for each possible answer
         for e in choices:
-            await qmsg.add_reaction(e[0])
+            await fmsg.add_reaction(e[0])
 
         # Add reaction to finalise selection
-        # We listen for this reaction and return a list of all reactions to qmsg upon this
-        await qmsg.add_reaction(approve_reaction)
+        # We listen for this reaction and return a list of all reactions to fmsg upon this
+        await fmsg.add_reaction(approve_reaction)
 
-        reactions = await self.await_react(user, qmsg, approve_reaction)
+        reactions = await self.await_react(user, fmsg, approve_reaction)
         if reactions == None:
             return
 
         # Forward the reactions list to a processing function self.process_choices
         # This is where the returned reaction data is interrpeted and all necessary checks occur
-        return await self.process_choices(user, question, choices, max_choices, reactions)
+        return await self.process_choices(user, field, choices, max_choices, reactions)
 
-    async def process_choices(self, user: discord.User, question, choices, max_choices, reactions):
+    async def process_choices(self, user: discord.User, field, choices, max_choices, reactions):
         answers = []
 
         for i, r in enumerate(reactions):
@@ -112,7 +112,7 @@ class Question(commands.Cog):
         if len(answers) > max_choices:
             embed = discord.Embed(description=f'You are only allowed up to {max_choices} {"answers" if max_choices > 1 else "answer"}.', colour=discord.Colour.red())
             await user.send(embed=embed)
-            return await self.question_choice(user, question, choices, max_choices)
+            return await self.choice_field(user, field, choices, max_choices)
 
         return answers
 
@@ -124,14 +124,14 @@ class Question(commands.Cog):
             answer = await self.flux.wait_for('message', timeout=60, check=check)
 
         except asyncio.TimeoutError as e:
-            embed = discord.Embed(description='You did not answer the question in time.', colour=discord.Colour.red())
+            embed = discord.Embed(description='You did not complete the field in time.', colour=discord.Colour.red())
             await user.send(embed=embed)
             return
 
         else:
             return answer
 
-    async def await_react(self, user: discord.User, msg: discord.Message, approve_reaction: str):
+    async def await_react(self, user: discord.User, msg, approve_reaction):
         def check(reaction, reactor):
             return reactor == user and str(reaction.emoji) == approve_reaction
         
@@ -139,7 +139,7 @@ class Question(commands.Cog):
             reaction, reactor = await self.flux.wait_for('reaction_add', timeout=60, check=check)
         
         except asyncio.TimeoutError as e:
-            embed = discord.Embed(description='You did not answer the question in time.', colour=discord.Colour.red())
+            embed = discord.Embed(description='You did not complete the field in time.', colour=discord.Colour.red())
             await user.send(embed=embed)
             return
         
@@ -149,4 +149,4 @@ class Question(commands.Cog):
             return rmsg.reactions
 
 def setup(flux):
-    flux.add_cog(Question(flux))
+    flux.add_cog(Field(flux))
