@@ -11,21 +11,21 @@ class New(commands.Cog):
     def __init__(self, flux):
         self.flux = flux
 
-    @commands.command(brief='Create a new project.', help='Creates a new project. The bot will message you questions to complete the required information.')
+    @commands.command(brief='Create a new project.', help='Creates a new project. The bot will ask you to complete the required information.')
     @commands.max_concurrency(1, per=BucketType.user, wait=False)
     async def new(self, ctx):
         await ctx.message.delete()
 
-        embed = discord.Embed(description='You\'re now creating a new project, here is what I need to know from you:', colour=discord.Colour.green())
+        embed = discord.Embed(description='You\'re now creating a new project, please complete the following information:', colour=discord.Colour.green())
         await ctx.author.send(embed=embed)
 
-        questions = [['text', 'What is your project title?', 128],
-                     ['date', 'What is the start date of your project?'],
-                     ['date', 'What is the end date of your project?'],
-                     ['text', 'What is the desciption of your project?', 512],
-                     ['text', 'What are the outcomes of your project?', 256],
-                     ['text', 'What are the deliverables of your project?', 256],
-                     ['choice', 'What is the objective of your project?', [
+        fields = [['text', 'Title', 128],
+                     ['date', 'Start date'],
+                     ['date', 'End date'],
+                     ['text', 'Description', 512],
+                     ['text', 'Outcomes', 256],
+                     ['text', 'Deliverables', 256],
+                     ['choice', 'Objective', [
                          ['1️⃣', config.read(('Objectives', '1'))[0]],
                          ['2️⃣', config.read(('Objectives', '2'))[0]],
                          ['3️⃣', config.read(('Objectives', '3'))[0]],
@@ -35,7 +35,7 @@ class New(commands.Cog):
                          ['7️⃣', config.read(('Objectives', '7'))[0]],
                          ['8️⃣', config.read(('Objectives', '8'))[0]]], 
                          1],
-                     ['choice', 'What resources does your project require?', [
+                     ['choice', 'Resources', [
                          ['1️⃣', config.read(('Resources', '1'))[0]],
                          ['2️⃣', config.read(('Resources', '2'))[0]],
                          ['3️⃣', config.read(('Resources', '3'))[0]],
@@ -43,7 +43,7 @@ class New(commands.Cog):
                          ['5️⃣', config.read(('Resources', '5'))[0]],
                          ['6️⃣', config.read(('Resources', '6'))[0]]],
                          6],
-                     ['choice', 'What is the status of your project?', [
+                     ['choice', 'Status', [
                          ['1️⃣', config.read(('Status', '1'))],
                          ['2️⃣', config.read(('Status', '2'))],
                          ['3️⃣', config.read(('Status', '3'))],
@@ -55,15 +55,15 @@ class New(commands.Cog):
         role = get(ctx.guild.roles, name='Flux Vetted')
         
         if role in ctx.author.roles:
-            questions.append(['choice', 'Is this an official Flux project?', [
-                ['✅', 'Yes'],
-                ['❌', 'No']],
+            fields.append(['choice', 'Officiality', [
+                ['✅', 'Official'],
+                ['❌', 'Not official']],
                 1])
         
-        qhand = self.flux.get_cog('Question')
-        ans = await qhand.question_handler(ctx.author, questions)
+        field_handler = self.flux.get_cog('Question')
+        ans = await field_handler.question_handler(ctx.author, fields)
         
-        # Last value of ans will be True if all questions were asked
+        # Last value of ans will be True if all fields were complete
         if len(ans) == 0 or ans[-1] != True:
             return
 
@@ -73,8 +73,8 @@ class New(commands.Cog):
         for i in ans[7]:
             resources += config.find_key_from_value('Resources', i)
 
-        # Official is default 'No' unless we asked the user that question
-        if len(questions) == 10:
+        # Official is default 'No' unless the user was prompted
+        if fields[-1][1] == 'Officiality':
             official = ans[9]
         else:
             official = 'No'
@@ -90,7 +90,7 @@ class New(commands.Cog):
             "objective": config.find_key_from_value('Objectives', ans[6][0]),
             "lead": ctx.author.id,
             "resources": resources,
-            "official": f"{1 if official == 'Yes' else 0}",
+            "official": f"{1 if official == 'Official' else 0}",
             "status": config.find_key_from_value('Status', ans[8][0])
         }
 
