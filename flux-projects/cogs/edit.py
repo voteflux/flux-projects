@@ -33,8 +33,13 @@ class Edit(commands.Cog):
             return await ctx.author.send(embed=embed)
             
 
-        embed = discord.Embed(description='You\'re now editing an existing project, please complete the following information:', colour=discord.Colour.green())
+        embed = discord.Embed(description=f'You\'re now editing project `{id}`, please review the existing information and update each field:', colour=discord.Colour.green())
         await ctx.author.send(embed=embed)
+
+        # Send existing project info
+        info_cog = self.flux.get_cog('Info')
+        data = await info_cog.form_project_data(ctx, project, 'longer')
+        await ctx.author.send(embed=data)
         
         fields = [['text', 'Title', 128],
                      ['date', 'Start date'],
