@@ -13,6 +13,7 @@ class New(commands.Cog):
 
     @commands.command(brief='Create a new project.', help='Creates a new project. The bot will ask you to complete the required information.')
     @commands.max_concurrency(1, per=BucketType.user, wait=False)
+    @commands.guild_only()
     async def new(self, ctx):
         await ctx.message.delete()
 
