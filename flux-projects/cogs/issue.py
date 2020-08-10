@@ -11,24 +11,24 @@ class Issue(commands.Cog):
     def __init__(self, flux):
         self.flux = flux
 
-    @commands.command(brief='Create a new issue for DigiPol', help='Create a new issue for the app. You will be prompted to answer some questions by the bot.')
+    @commands.command(brief='Create a new issue for DigiPol', help='Create a new issue for the app. The bot will ask you to complete the required information.')
     @commands.max_concurrency(1, per=BucketType.user, wait=False)
     @commands.has_role('App Issue Creator')
     async def issue(self, ctx):
         await ctx.message.delete()
 
-        embed = discord.Embed(description='You\'re now creating a new issue for the app, here is what I need to know from you:', colour=discord.Colour.green())
+        embed = discord.Embed(description='You\'re now creating a new issue for the app, please complete the following information:', colour=discord.Colour.green())
         await ctx.author.send(embed=embed)
 
-        questions = [['text', 'What is the title of your issue?', 256],
-                    ['date', 'What is the start date of your issue?'],
-                    ['date', 'What is the end date of your issue?'],
-                    ['text', 'What is the question of your issue?', 256],
-                    ['text', 'What is the description of your issue?', 256],
-                    ['text', 'What is the name of the sponsoring organisation?', 256]]
+        fields = [['text', 'Title', 256],
+                    ['date', 'Start date'],
+                    ['date', 'End date'],
+                    ['text', 'Question', 256],
+                    ['text', 'Description', 256],
+                    ['text', 'Sponsor', 256]]
         
-        qhand = self.flux.get_cog('Question')
-        ans = await qhand.question_handler(ctx.author, questions)
+        field_handler = self.flux.get_cog('Field')
+        ans = await field_handler.field_handler(ctx.author, fields)
 
         # Last value of ans will be True if all questions were asked
         if len(ans) == 0 or ans[-1] != True:
