@@ -12,7 +12,7 @@ class Field(commands.Cog):
     async def field_handler(self, user: discord.User, fields):
         answers = []
         for f in fields:
-            
+
             if f[0] == 'text':
                 ans = await self.text_field(user, f[1], f[2])
                 if ans == None:
@@ -30,7 +30,7 @@ class Field(commands.Cog):
                 if ans == None:
                     return answers
                 answers.append(ans)
-        
+
         answers.append(True)
         return answers
 
@@ -76,10 +76,10 @@ class Field(commands.Cog):
         # Form field embed
         embed = discord.Embed(title=field, description=f'React with your {"answers" if max_choices > 1 else "answer"} and then {approve_reaction} once you\'re finished.', colour=discord.Colour.green())
         embed.set_footer(text=f'You have up to {max_choices} {"answers" if max_choices > 1 else "answer"}.')
-        
+
         for c in choices:
             embed.add_field(name='\u200b', value=f'{c[0]} {c[1]}', inline=False)
-        
+
         # Send field embed, message known as fmsg
         fmsg = await user.send(embed=embed)
 
@@ -119,7 +119,7 @@ class Field(commands.Cog):
     async def await_reply(self, user: discord.User, char_limit: 60):
         def check(m):
             return m.author == user and isinstance(m.channel, discord.DMChannel)
-        
+
         try:
             answer = await self.flux.wait_for('message', timeout=char_limit, check=check)
 
@@ -134,15 +134,15 @@ class Field(commands.Cog):
     async def await_react(self, user: discord.User, msg, approve_reaction):
         def check(reaction, reactor):
             return reactor == user and str(reaction.emoji) == approve_reaction
-        
+
         try:
             reaction, reactor = await self.flux.wait_for('reaction_add', timeout=60, check=check)
-        
+
         except asyncio.TimeoutError as e:
             embed = discord.Embed(description='You did not complete the field in time.', colour=discord.Colour.red())
             await user.send(embed=embed)
             return
-        
+
         else:
             rmsg = await user.fetch_message(msg.id)
             rmsg.reactions.pop()
