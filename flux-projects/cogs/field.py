@@ -34,12 +34,12 @@ class Field(commands.Cog):
         answers.append(True)
         return answers
 
-    async def text_field(self, user: discord.User, field, char_limit: 0):
+    async def text_field(self, user: discord.User, field, char_limit):
         embed = discord.Embed(title=field, colour=discord.Colour.green())
         embed.set_footer(text=f'Character limit: {char_limit if char_limit > 0 else "No limit"}')
         await user.send(embed=embed)
 
-        answer = await self.await_reply(user)
+        answer = await self.await_reply(user, char_limit)
         if answer == None:
             return
 
@@ -116,12 +116,12 @@ class Field(commands.Cog):
 
         return answers
 
-    async def await_reply(self, user: discord.User):
+    async def await_reply(self, user: discord.User, char_limit: 60):
         def check(m):
             return m.author == user and isinstance(m.channel, discord.DMChannel)
         
         try:
-            answer = await self.flux.wait_for('message', timeout=60, check=check)
+            answer = await self.flux.wait_for('message', timeout=char_limit, check=check)
 
         except asyncio.TimeoutError as e:
             embed = discord.Embed(description='You did not complete the field in time.', colour=discord.Colour.red())
