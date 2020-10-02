@@ -1,3 +1,8 @@
 {
-    "python.autoComplete.extraPaths": ["./flux-projects"]
+    "python.autoComplete.extraPaths": [
+        "./flux-projects"
+    ],
+    "python.analysis.extraPaths": [
+        "./flux-projects"
+    ]
 }
