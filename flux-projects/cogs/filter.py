@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
-from utility.db_manager import db_connection
-import utility.config_manager as config
+from util.db_manager import db_connection
+import util.config_manager as config
 
 
 class Filter(commands.Cog):

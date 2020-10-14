@@ -2,8 +2,8 @@ import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from discord.utils import get
-import utility.config_manager as config
-from utility.db_manager import db_connection
+import util.config_manager as config
+from util.db_manager import db_connection
 
 
 class New(commands.Cog):

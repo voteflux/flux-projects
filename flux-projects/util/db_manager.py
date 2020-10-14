@@ -1,4 +1,4 @@
-from utility.config_manager import db_config
+from util.config_manager import db_config
 import mysql.connector
 
 

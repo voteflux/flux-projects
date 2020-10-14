@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
-from utility.config_manager import read as config
-from utility.db_manager import db_connection
+from util.config_manager import read as config
+from util.db_manager import db_connection
 import asyncio
 
 

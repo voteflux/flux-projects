@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from discord.utils import get
 import requests
-import utility.config_manager as config
+import util.config_manager as config
 
 
 class Issue(commands.Cog):

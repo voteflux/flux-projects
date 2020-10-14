@@ -3,7 +3,7 @@ import os.path
 from ast import literal_eval
 
 def check():
-    if os.path.isfile('flux-projects/utility/config.ini'):
+    if os.path.isfile('flux-projects/util/config.ini'):
         return('Using existing config.')
     else:
         config = configparser.ConfigParser()
@@ -39,18 +39,18 @@ def check():
                             '4': 'Out Of Scope',
                             '5': 'Active'}
 
-        with open('flux-projects/utility/config.ini', 'w') as f:
+        with open('flux-projects/util/config.ini', 'w') as f:
             config.write(f)
         return('Config file does not exist. Created with default values.')
 
 def read(setting):
     config = configparser.ConfigParser()
-    config.read('flux-projects/utility/config.ini')
+    config.read('flux-projects/util/config.ini')
     return literal_eval(config[setting[0]][setting[1]]) if 'Objectives' == setting[0] or 'Resources' == setting[0] else config[setting[0]][setting[1]]
 
 def read_section(section):
     config = configparser.ConfigParser()
-    config.read('flux-projects/utility/config.ini')
+    config.read('flux-projects/util/config.ini')
     return config.items(section)
 
 def find_key_from_value(section, value):
