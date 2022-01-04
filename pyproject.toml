@@ -8,7 +8,7 @@ license = "GPL-3.0"
 [tool.poetry.dependencies]
 python = "^3.8"
 "discord.py" = "^1.5.0"
-requests = "^2.25.1"
+requests = "^2.27.0"
 mysql-connector-python = "^8.0.22"
 configparser = "^5.0.1"
 
